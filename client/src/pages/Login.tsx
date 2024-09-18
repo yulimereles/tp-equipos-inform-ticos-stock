@@ -12,27 +12,27 @@ const Login: React.FC = () => {
         e.preventDefault();
         try {
             const response = await loginUser(email, password);
-
+            
+            // Verifica la respuesta
+            // console.log(response.data); // Esto te ayudará a ver cómo es la respuesta
+            
             if (response.status === 200) {
                 const data = response.data;
 
-                // Verifica si 'data' tiene el token
+
+                // Verifica si 'data' tiene el usuario y el rol
                 if (data.token) {
                     localStorage.setItem('token', data.token);
                     setMessage('Inicio de sesión exitoso');
 
-                    // Verifica si 'data.user' y 'data.user.role' existen
-                    if (data.user && data.user.role) {
-                        if (data.user.role === 'admin') {
-                            navigate('/admin'); // Redirige al panel de admin si es admin
-                        } else {
-                            navigate('/equipos'); // Redirige a la lista de equipos si es usuario normal
-                        }
-                    } else {
-                        setMessage('Rol del usuario no encontrado en la respuesta');
-                    }
+                    // Redirecciona basado en el rol
+                    // if (data.user.role === 'admin') {
+                    //     navigate('/admin'); // Redirige al panel de admin si es admin
+                    // } else {
+                        navigate('/equipos'); // Redirige a la lista de equipos si es usuario normal
+                    // }
                 } else {
-                    setMessage('Token no encontrado en la respuesta');
+                    setMessage('Usuario o rol no encontrado en la respuesta');
                 }
             } else {
                 setMessage('Error al iniciar sesión');
