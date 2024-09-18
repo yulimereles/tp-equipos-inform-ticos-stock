@@ -7,41 +7,47 @@ const Login: React.FC = () => {
     const [password, setPassword] = useState('');
     const [message, setMessage] = useState('');
     const navigate = useNavigate(); // Para redireccionar después del login
-
     const handleLogin = async (e: React.FormEvent) => {
         e.preventDefault();
         try {
             const response = await loginUser(email, password);
             
-            // Verifica la respuesta
-            // console.log(response.data); // Esto te ayudará a ver cómo es la respuesta
+            // Verifica la estructura de la respuesta
+            console.log(response.data); 
             
             if (response.status === 200) {
                 const data = response.data;
-
-
-                // Verifica si 'data' tiene el usuario y el rol
+    
+                // Verifica si 'data' contiene el token
                 if (data.token) {
                     localStorage.setItem('token', data.token);
                     setMessage('Inicio de sesión exitoso');
-
-                    // Redirecciona basado en el rol
-                    // if (data.user.role === 'admin') {
-                    //     navigate('/admin'); // Redirige al panel de admin si es admin
-                    // } else {
-                        navigate('/equipos'); // Redirige a la lista de equipos si es usuario normal
-                    // }
+    
+                    // Verifica si 'data.role' y 'data.role.role' están definidos
+                    if (data.role && data.role.role) {
+                        // Redirecciona basado en el rol
+                        if (data.role.role === 'admin') {
+                            navigate('/admin'); // Redirige al panel de admin si es admin
+                        } else {
+                            navigate('/equipos'); // Redirige a la lista de equipos si es usuario normal
+                        }
+                    } else {
+                        setMessage('Usuario o rol no encontrado en la respuesta');
+                    }
                 } else {
-                    setMessage('Usuario o rol no encontrado en la respuesta');
+                    setMessage('Token no encontrado en la respuesta');
                 }
             } else {
                 setMessage('Error al iniciar sesión');
             }
         } catch (error) {
-            console.log(error);
+            console.error(error);
             setMessage('Error al iniciar sesión');
         }
     };
+    
+    
+    
 
     return (
         <div className="flex min-h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8">
