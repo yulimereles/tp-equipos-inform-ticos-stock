@@ -21,4 +21,5 @@ const env: IEnv = {
     DIALECT: process.env.DIALECT 
 };
 
+
 export default env; 
