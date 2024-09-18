@@ -1,3 +1,4 @@
+import React from 'react';
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { registerUser } from '../services/api';
@@ -13,7 +14,11 @@ const RegisterForm = () => {
             const response = await registerUser(email, password, role);
             console.log(response);
         } catch (error) {
-            console.error('Error al registrar el usuario:', error.response.data.message);
+            if (error instanceof Error && error.response) {
+                console.error('Error al registrar el usuario:', (error as any).response.data.message);
+            } else {
+                console.error('Error desconocido:', error);
+            }
         }
     };
 
@@ -84,11 +89,11 @@ const RegisterForm = () => {
                             Registrarse
                         </button>
                         <p className="mt-4">
-                            ¿Ya tienes una cuenta?{' '}
-                            <Link to="/login" className="text-blue-500 hover:underline">
-                            Inicia sesión aquí
-                            </Link>
-                        </p>
+                        ¿Ya tienes una cuenta?{' '}
+                        <Link to="/login" className="text-blue-500 hover:underline">
+                        Inicia sesión aquí
+                        </Link>
+                    </p>
                     </div>
                 </form>
             </div>

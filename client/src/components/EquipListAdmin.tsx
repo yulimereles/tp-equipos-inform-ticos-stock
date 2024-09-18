@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { getInventory } from '../services/api'; // Funciones HTTP
 
 interface Equipment {

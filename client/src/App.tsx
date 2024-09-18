@@ -1,3 +1,4 @@
+import React from 'react';
 import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom';
 import AdminPanel from '../src/components/AdnminPanel';
 import EquipmentList from '../src/components/EquipListAdmin'; // Página para ver equipos
