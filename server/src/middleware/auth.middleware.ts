@@ -7,8 +7,9 @@ interface CustomRequest extends Request {
 }
 
 const authenticateToken = async (req: CustomRequest, res: Response, next: NextFunction) => {
-    const token = req.headers['authorization'];
-    // const token = authHeader && authHeader.split(' ')[1];
+    // Obtener el token del encabezado Authorization
+    const authHeader = req.headers['authorization'];
+    const token = authHeader?.split(' ')[1];
 
     if (token == null) return res.sendStatus(401);
 
@@ -16,9 +17,11 @@ const authenticateToken = async (req: CustomRequest, res: Response, next: NextFu
         if (err) return res.sendStatus(403);
 
         try {
+            // Buscar el usuario en la base de datos
             const dbUser = await UserModel.findByPk(user.id);
             if (!dbUser) return res.sendStatus(404);
 
+            // Asignar el usuario al request
             req.user = dbUser;
             next();
         } catch (error: any) {

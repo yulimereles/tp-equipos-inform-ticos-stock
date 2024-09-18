@@ -23,6 +23,13 @@ export class Server {
         this.midlewares();
         this.routes();
     }
+    
+    midlewares(): void{
+        this.app.use(cors());
+        this.app.use(helmet());
+        this.app.use(morgan('dev'));
+        this.app.use(express.json());
+    }
 
     async dbConnect(): Promise<void>{
         await dbConnection();
@@ -40,11 +47,5 @@ export class Server {
     }
 
 
-    midlewares(): void{
-        this.app.use(cors());
-        this.app.use(helmet());
-        this.app.use(morgan('dev'));
-        this.app.use(express.json());
-    }
 
 }

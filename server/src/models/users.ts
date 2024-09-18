@@ -5,7 +5,7 @@ export interface UserAttributes {
     id?: number;
     email: string;
     password: string;
-    role: string;
+    role: 'admin' | 'user';
     createdAt?: Date;
     updatedAt?: Date;
     deletedAt?: Date;
@@ -17,7 +17,7 @@ export class UserModel extends Model<UserAttributes, UserCreationAttributes> imp
     public id!: number;
     public email!: string;
     public password!: string;
-    public role!: string;
+    public role!: 'admin' | 'user';
     public createdAt!: Date;
     public updatedAt!: Date;
     public deletedAt?: Date;
@@ -39,8 +39,9 @@ UserModel.init({
         allowNull: false
     },
     role: {
-        type: DataTypes.STRING,
-        allowNull: false
+        type: DataTypes.ENUM('admin', 'user'),
+        allowNull: false,
+        defaultValue: 'user'
     },
     createdAt: {
         type: DataTypes.DATE,
